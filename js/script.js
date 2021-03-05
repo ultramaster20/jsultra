@@ -1,37 +1,82 @@
 'use strict';
 
-const options ={
-	a: "b",
-	c: 8,
-	d: {
-		e: "f",
-		h: 9,
+const personalMovieDB = {
+	count: 0,
+	movies: {},
+	actors: {},
+	genres: [],
+	privat: false,
+	start: function () {
+		personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
+		while (personalMovieDB.count == '' || personalMovieDB.count == null || personalMovieDB.count == isNaN(personalMovieDB.count)) {
+			personalMovieDB.count = +prompt("Сколько фильмов вы уже посмотрели?", "");
+		}
 	},
-	makeTest: function () {
-		console.log("TEST");
+	rememberMyFilms: function () {
+		for(let i = 0; i < 2; i++) {
+			const a = prompt("Один из последних просмотренных фильмов?", " "),
+					b = prompt("На сколько оцените его?", " ");
+	
+					if (a != "" && b != "" && a != null && b != null && a.length < 50 && b.length < 50) {
+						personalMovieDB.movies[a] = b;
+						console.log('done');
+					} else {
+						console.log('error');
+						i--;
+					}		
+			}
+	},
+	detectPersonalLevel: function () {
+		if (personalMovieDB.count < 10) {
+			console.log("Просмотрено довольно мало фильмов");
+			} else if (personalMovieDB.count >= 10 && personalMovieDB.count <= 30) {
+				console.log("Вы классический зритель");
+			} else if (personalMovieDB.count > 30) {
+				console.log("Вы киноман");
+			} else {
+				console.log("Произошла ошибка");
+			}
+	},
+	showMyDB: function (hidden) {
+		if (!hidden) {
+	console.log(personalMovieDB);
+		}
+	},
+	toggleVisibleMyDB: function () {
+if (personalMovieDB.privat === false) {
+	personalMovieDB.privat = true;
+} else{
+	personalMovieDB.privat = false;
+}
+	},
+	writeYourGenres: function () {
+		//for (let i = 1; i <= 3; i++){
+		//	let genre = prompt(`Ваш любимый жанр под номером ${i}`);
+		//	if (genre === "" || genre == null) {
+		//		console.log("Вы ввели некорректные данные или не ввели их вовсе");
+		//		i--;
+		//	} else {
+		//		personalMovieDB.genres[i-1] = genre;
+		//	}
+		//}
+		for (let i = 1; i < 2; i++){
+			let genres = prompt(`Введите ваши любимые жанры через запятую`).toLowerCase();
+			if (genres === "" || genres == null) {
+				console.log("Вы ввели некорректные данные или не ввели их вовсе");
+				i--;
+			} else {
+				personalMovieDB.genres = genres.split(',');
+				personalMovieDB.genres.sort();
+			}
+		}
+		personalMovieDB.genres.forEach((item,i) => {
+			console.log (` Любимый жанр ${i + 1} - это ${item}`);
+		});	
 	}
 };
 
-options.makeTest();
-const {e, f} = options.d;
-console.log(e);
-
-console.log(Object.keys(options).length);
 
 
 
-let counter =0;
 
-for (let key in options) {
-	if (typeof(options[key]) === 'object') {
-		for (let i in options[key]) {
-		console.log (`Свойство ${i} имеет значение ${options[key][i]}`);
-		counter++;
-	} 
-} else{
-		console.log(`Свойство ${key} имеет значение ${options[key]}`);
-		counter++;
-	}
-}
 
-console.log(counter);
